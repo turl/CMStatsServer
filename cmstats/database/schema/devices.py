@@ -73,7 +73,7 @@ class Device(Base):
         if device is not None:
             q = q.filter(cls.name == device)
             
-        q = q.group_by(cls.country, cls.name).all()
+        q = q.group_by(cls.country).all()
         
         if device is not None:
             q = sorted(q, key=lambda x: x[1], reverse=True)

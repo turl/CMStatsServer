@@ -3,7 +3,7 @@
 drawChart();
 </%def>	
 <%def name="javascript()">
-google.load('visualization', '1', {'packages':['geomap', 'table']});
+google.load('visualization', '1', {'packages':['geochart', 'table']});
 function drawChart() {
     var data = new google.visualization.DataTable();
     data.addColumn('string', 'Country');
@@ -13,7 +13,13 @@ function drawChart() {
     ['${value[0]|h}', ${value[1]|h}],
     % endfor
     ]);
-    var chart = new google.visualization.GeoMap(document.getElementById('map'));
+    
+    var config = {
+        colorAxis: {minValue: 0, maxValue: 0, colors: ['#FF0000', '#00FF00']},
+        displayMode: 'region'
+    };
+    
+    var chart = new google.visualization.GeoChart(document.getElementById('map'), config);
     chart.draw(data, {width:681, height: 440});    
 }
 </%def>
