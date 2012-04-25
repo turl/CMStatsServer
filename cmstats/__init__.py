@@ -31,6 +31,7 @@ def main(global_config, **settings):
     config = Configurator(root_factory=Root, settings=settings)
     config.add_static_view('static', 'cmstats:static')
     config.add_route('perdevice', '/perdevice/{device}')
+    config.add_route('percountry', '/percountry/{country}')
     config.scan('cmstats.views')
 
     # Wrap the app in the SessionMiddleware

@@ -20,44 +20,54 @@ class Device(Base):
     date_updated = Column('date_updated', DateTime)
 
     @classmethod
-    def count_kang(cls, device=None):
+    def count_kang(cls, device=None, country=None):
         session = DBSession()
         q = session.query(cls).filter(cls.kang == 1)
         
         if device is not None:
             q = q.filter(cls.name == device)
+        if country is not None:
+            q = q.filter(cls.country == country)
         
         return q.count()
 
     @classmethod
-    def count_nonkang(cls, device=None):
+    def count_nonkang(cls, device=None, country=None):
         session = DBSession()
         q = session.query(cls).filter(cls.kang == 0)
         
         if device is not None:
             q = q.filter(cls.name == device)
+        if country is not None:
+            q = q.filter(cls.country == country)
         
         return q.count()
 
     @classmethod
-    def device_count(cls):
+    def device_count(cls, country=None):
         session = DBSession()
 
-        q = session.query(func.count(cls.name), cls.name) \
-            .group_by(cls.name).all()
+        q = session.query(func.count(cls.name), cls.name)
+        
+        if country is not None:
+            q = q.filter(cls.country == country)
+        
+        q = q.group_by(cls.name).all()
 
         q = sorted(q, key=lambda x: x[0], reverse=True)
 
         return q
 
     @classmethod
-    def version_count(cls, device=None):
+    def version_count(cls, device=None, country=None):
         session = DBSession()
 
         q = session.query(func.count(cls.version), cls.version)
         
         if device is not None:
             q = q.filter(cls.name == device)
+        if country is not None:
+            q = q.filter(cls.country == country)
         
         q = q.filter(cls.kang == 0).group_by(cls.version).all()
 
@@ -81,13 +91,15 @@ class Device(Base):
         return q
 
     @classmethod
-    def count_last_day(cls, device=None):
+    def count_last_day(cls, device=None, country=None):
         timestamp = datetime.datetime.now() - datetime.timedelta(hours=24)
         session = DBSession()
         q = session.query(cls)
         
         if device is not None:
             q = q.filter(cls.name == device)
+        if country is not None:
+            q = q.filter(cls.country == country)
         
         q = q.filter(cls.date_added > timestamp).count()
         

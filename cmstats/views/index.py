@@ -54,3 +54,24 @@ def perdevice_page(request):
     }
 
     return kwargs
+
+@view_config(context=Root, renderer='percountry.mako', route_name='percountry')
+def percountry_page(request):
+    country_code = request.matchdict['country'].lower()
+    country = population.get(country_code, None)
+    if country is None:
+        return 'Invalid country'
+    
+    print country
+    
+    kwargs = {
+            'country': country[0],
+            'population': country[1],
+            'device_count': Device.device_count(country=country_code),
+            'version_count': Device.version_count(country=country_code),
+            'total_nonkang': Device.count_nonkang(country=country_code),
+            'total_kang': Device.count_kang(country=country_code),
+            'total_last_day': Device.count_last_day(country=country_code),
+    }
+
+    return kwargs

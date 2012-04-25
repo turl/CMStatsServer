@@ -16,11 +16,15 @@ function drawChart() {
     
     var config = {
         colorAxis: {minValue: 0, maxValue: 0, colors: ['#FF0000', '#00FF00']},
+        enableRegionInteractivity: true,
         displayMode: 'region'
     };
     
     var chart = new google.visualization.GeoChart(document.getElementById('map'), config);
-    chart.draw(data, {width:681, height: 440});    
+    chart.draw(data, {width:681, height: 440});
+    google.visualization.events.addListener(chart, 'regionClick', function(region) {
+		location.href = '/percountry/'+region.region;
+    });
 }
 </%def>
         <div style="text-align: center">
