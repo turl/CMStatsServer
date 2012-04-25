@@ -71,9 +71,12 @@ class Device(Base):
         q = session.query(cls.country, func.count('*').label('count'))
         
         if device is not None:
-            q.filter(cls.name == device)
+            q = q.filter(cls.name == device)
             
-        q = q.group_by(cls.country).all()
+        q = q.group_by(cls.country, cls.name).all()
+        
+        if device is not None:
+            q = sorted(q, key=lambda x: x[1], reverse=True)
         
         return q
 

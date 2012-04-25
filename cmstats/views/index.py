@@ -34,12 +34,19 @@ def map_page(request):
 
 @view_config(context=Root, renderer='perdevice.mako', route_name='perdevice')
 def perdevice_page(request):
-    print request.matchdict
-
     device = request.matchdict['device']
+    country_data = []
+
+    for country_code, country_installs in Device.country_count(device):
+        country = population.get(country_code, None)
+        if country is not None:
+            country_data.append((country[0], country_installs))
+    
+    print country_data
 
     kwargs = {
             'device': device,
+            'country_data': country_data,
             'version_count': Device.version_count(device),
             'total_nonkang': Device.count_nonkang(device),
             'total_kang': Device.count_kang(device),

@@ -33,3 +33,15 @@
             <tr><td>${version[1]|h}</td><td>${version[0]|number}</td></tr>
             % endfor
         </table>
+
+
+		<h3>Installs per Country for device ${device|h}</h3>
+        <table>
+            <tr>
+                <th width="250">Country</th>
+                <th>Total</th>
+            </tr>
+            % for value in country_data:
+            <tr><td>${value[0]|h}</td><td>${value[1]|h}</td></tr>
+            % endfor
+        </table>
