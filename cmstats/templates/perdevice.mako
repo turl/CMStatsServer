@@ -68,6 +68,6 @@ function drawChart() {
                 <th>Total</th>
             </tr>
             % for value in country_data:
-            <tr><td>${value[0]|h}</td><td>${value[1]|h}</td></tr>
+            <tr><td>${value[0]|h}</td><td>${value[1]|number}</td></tr>
             % endfor
         </table>
