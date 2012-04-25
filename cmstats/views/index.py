@@ -31,3 +31,19 @@ def map_page(request):
     print country_data
 
     return {'country_data': country_data}
+
+@view_config(context=Root, renderer='perdevice.mako', route_name='perdevice')
+def perdevice_page(request):
+    print request.matchdict
+
+    device = request.matchdict['device']
+
+    kwargs = {
+            'device': device,
+            'version_count': Device.version_count(device),
+            'total_nonkang': Device.count_nonkang(device),
+            'total_kang': Device.count_kang(device),
+            'total_last_day': Device.count_last_day(device),
+    }
+
+    return kwargs

@@ -20,16 +20,24 @@ class Device(Base):
     date_updated = Column('date_updated', DateTime)
 
     @classmethod
-    def count_kang(cls):
+    def count_kang(cls, device=None):
         session = DBSession()
-        q = session.query(cls).filter(cls.kang == 1).count()
-        return q
+        q = session.query(cls).filter(cls.kang == 1)
+        
+        if device is not None:
+            q = q.filter(cls.name == device)
+        
+        return q.count()
 
     @classmethod
-    def count_nonkang(cls):
+    def count_nonkang(cls, device=None):
         session = DBSession()
-        q = session.query(cls).filter(cls.kang == 0).count()
-        return q
+        q = session.query(cls).filter(cls.kang == 0)
+        
+        if device is not None:
+            q = q.filter(cls.name == device)
+        
+        return q.count()
 
     @classmethod
     def device_count(cls):
@@ -43,28 +51,43 @@ class Device(Base):
         return q
 
     @classmethod
-    def version_count(cls):
+    def version_count(cls, device=None):
         session = DBSession()
 
-        q = session.query(func.count(cls.version), cls.version) \
-            .filter(cls.kang == 0) \
-            .group_by(cls.version).all()
+        q = session.query(func.count(cls.version), cls.version)
+        
+        if device is not None:
+            q = q.filter(cls.name == device)
+        
+        q = q.filter(cls.kang == 0).group_by(cls.version).all()
 
         q = sorted(q, key=lambda x: x[0], reverse=True)
 
         return q
 
     @classmethod
-    def country_count(cls):
+    def country_count(cls, device=None):
         session = DBSession()
-        q = session.query(cls.country, func.count('*').label('count')).group_by(cls.country).all()
+        q = session.query(cls.country, func.count('*').label('count'))
+        
+        if device is not None:
+            q.filter(cls.name == device)
+            
+        q = q.group_by(cls.country).all()
+        
         return q
 
     @classmethod
-    def count_last_day(cls):
+    def count_last_day(cls, device=None):
         timestamp = datetime.datetime.now() - datetime.timedelta(hours=24)
         session = DBSession()
-        q = session.query(cls).filter(cls.date_added > timestamp).count()
+        q = session.query(cls)
+        
+        if device is not None:
+            q = q.filter(cls.name == device)
+        
+        q = q.filter(cls.date_added > timestamp).count()
+        
         return q
 
     @classmethod

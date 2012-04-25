@@ -1,6 +1,5 @@
 <%def name="javascript()"></%def>
 <%def name="onload()"></%def>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
