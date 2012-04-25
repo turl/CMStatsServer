@@ -10,7 +10,7 @@
                 <td>${total_nonkang|number}</td>
             </tr>
             <tr>
-                <td>Unofficial Installs (KANGs)</td>
+                <td>Unofficial Installs</td>
                 <td>${total_kang|number}</td>
             </tr>
             <tr>

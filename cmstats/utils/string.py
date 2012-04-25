@@ -3,7 +3,7 @@ import re
 
 def parse_modversion(modversion):
     # Ignore KANG versions.
-    if "KANG" in modversion:
+    if "KANG" in modversion or "UNOFFICIAL" in modversion:
         return None
 
     # Determine RC Version
