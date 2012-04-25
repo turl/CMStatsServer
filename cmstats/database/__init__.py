@@ -45,6 +45,6 @@ def init_database(engine):
     Base.metadata.create_all(engine)
 
     try:
-        populate_data()
+        pass #populate_data()
     except:
         DBSession.rollback()
