@@ -23,6 +23,8 @@
             </tr>
         </table>
         
+        <% isofficial = len(version_count) > 0 %>
+        % if isofficial:
         <h3>Installs by Version</h3>
         <table>
             <tr>
@@ -33,6 +35,7 @@
             <tr><td>${version[1]|h}</td><td>${version[0]|number}</td></tr>
             % endfor
         </table>
+        % endif
         
         <h3>Installs by Device</h3>
         <table>

@@ -44,13 +44,15 @@ class Device(Base):
         return q.count()
 
     @classmethod
-    def device_count(cls, country=None):
+    def device_count(cls, country=None, kang=None):
         session = DBSession()
 
         q = session.query(func.count(cls.name), cls.name)
         
         if country is not None:
             q = q.filter(cls.country == country)
+        if kang is not None:
+            q = q.filter(cls.kang == int(kang))
         
         q = q.group_by(cls.name).all()
 
@@ -59,7 +61,7 @@ class Device(Base):
         return q
 
     @classmethod
-    def version_count(cls, device=None, country=None):
+    def version_count(cls, device=None, country=None, kang=None):
         session = DBSession()
 
         q = session.query(func.count(cls.version), cls.version)
@@ -68,6 +70,8 @@ class Device(Base):
             q = q.filter(cls.name == device)
         if country is not None:
             q = q.filter(cls.country == country)
+        if kang is not None:
+            q = q.filter(cls.kang == int(kang))
         
         q = q.filter(cls.kang == 0).group_by(cls.version).all()
 
@@ -76,12 +80,14 @@ class Device(Base):
         return q
 
     @classmethod
-    def country_count(cls, device=None):
+    def country_count(cls, device=None, kang=None):
         session = DBSession()
         q = session.query(cls.country, func.count('*').label('count'))
         
         if device is not None:
             q = q.filter(cls.name == device)
+        if kang is not None:
+            q = q.filter(cls.kang == int(kang))
             
         q = q.group_by(cls.country).all()
         
@@ -91,7 +97,7 @@ class Device(Base):
         return q
 
     @classmethod
-    def count_last_day(cls, device=None, country=None):
+    def count_last_day(cls, device=None, country=None, kang=None):
         timestamp = datetime.datetime.now() - datetime.timedelta(hours=24)
         session = DBSession()
         q = session.query(cls)
@@ -100,6 +106,8 @@ class Device(Base):
             q = q.filter(cls.name == device)
         if country is not None:
             q = q.filter(cls.country == country)
+        if kang is not None:
+            q = q.filter(cls.kang == int(kang))
         
         q = q.filter(cls.date_added > timestamp).count()
         

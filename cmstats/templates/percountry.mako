@@ -48,6 +48,8 @@ function drawChart() {
             </tr>
         </table>
         
+        <% isofficial = len(version_count) > 0 %>
+        % if isofficial:
         <h3>Installs by Version for ${country|h}</h3>
         <table>
             <tr>
@@ -58,6 +60,7 @@ function drawChart() {
             <tr><td>${version[1]|h}</td><td>${version[0]|number}</td></tr>
             % endfor
         </table>
+        % endif
 
         
         <h3>Installs by Device for ${country|h}</h3>
